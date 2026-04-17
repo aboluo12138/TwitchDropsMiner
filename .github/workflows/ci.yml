@@ -94,7 +94,7 @@ jobs:
       - name: Add settings.json
         shell: bash
         run: |
-          cat > dist/settings.json <<'EOF'
+          cat > settings.json <<'EOF'
           {
               "autostart_tray": false,
               "available_drops_check": false,
@@ -175,7 +175,7 @@ jobs:
       - name: Add settings.json
         shell: bash
         run: |
-          cat > dist/settings.json <<'EOF'
+          cat > settings.json <<'EOF'
           {
               "autostart_tray": false,
               "available_drops_check": false,
@@ -283,7 +283,7 @@ jobs:
       - name: Add settings.json
         shell: bash
         run: |
-          cat > dist/settings.json <<'EOF'
+          cat > settings.json <<'EOF'
           {
               "autostart_tray": false,
               "available_drops_check": false,
@@ -377,7 +377,7 @@ jobs:
       - name: Add settings.json
         shell: bash
         run: |
-          cat > dist/settings.json <<'EOF'
+          cat > settings.json <<'EOF'
           {
               "autostart_tray": false,
               "available_drops_check": false,
