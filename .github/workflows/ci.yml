@@ -357,7 +357,10 @@ jobs:
 
       - name: Install system dependencies
         run: |
-          sudo apt update
+          # 清理可能存在的损坏索引并重试
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo apt clean
+          sudo apt update || (sleep 30 && sudo apt update) # 如果失败，等待30秒后重试
           sudo apt install libgirepository1.0-dev gir1.2-ayatanaappindicator3-0.1 libayatana-appindicator3-1
 
       - name: Install appimage-builder
