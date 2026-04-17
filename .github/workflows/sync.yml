@@ -2,8 +2,12 @@ name: Sync TwitchDropsMiner  # workflow 名字（随便起）
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # 定时任务：每6小时执行一次
-  workflow_dispatch:        # 允许你在 GitHub 页面手动点击运行
+    - cron: "0 0 * * 0"   # 每周日 UTC 0:00 (北京时间周日上午 8:00) 运行一次
+  push:
+    branches:
+      - [cite_start]"master"         # 当 master 分支有代码推送时依然会触发构建 [cite: 1]
+  [cite_start]pull_request:          # 有 PR 时依然会触发验证 [cite: 1]
+  [cite_start]workflow_dispatch:     # 保持手动触发按钮，方便你随时点击运行 [cite: 1]
 
 permissions:
   contents: write           # 给 workflow 写仓库的权限（否则 push 会失败）
