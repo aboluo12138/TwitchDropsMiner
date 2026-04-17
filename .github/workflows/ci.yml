@@ -90,6 +90,33 @@ jobs:
       - name: Create portable executable
         run: |
           pyinstaller build.spec
+  
+      - name: Add settings.json
+        run: |
+          cat > dist/settings.json <<'EOF'
+          {
+              "autostart_tray": false,
+              "available_drops_check": false,
+              "connection_quality": 1,
+              "dark_mode": false,
+              "enable_badges_emotes": false,
+              "exclude": {
+                  "__type": "set",
+                  "data": []
+              },
+              "language": "简体中文",
+              "priority": [],
+              "priority_mode": {
+                  "__type": "PriorityMode",
+                  "data": 0
+              },
+              "proxy": {
+                  "__type": "URL",
+                  "data": ""
+              },
+              "tray_notifications": true
+          }
+          EOF
 
       - name: Create release folder
         run: |
@@ -97,6 +124,7 @@ jobs:
           New-Item $FolderName -ItemType Directory
           Copy-Item dist\*.exe $FolderName
           Copy-Item manual.txt $FolderName
+          Copy-Item settings.json $FolderName
           Compress-Archive -Path $FolderName -DestinationPath Twitch.Drops.Miner.Windows.zip
 
       - name: Upload build artifact
@@ -143,12 +171,40 @@ jobs:
         run: |
           pyinstaller build.spec --noconfirm
 
+      - name: Add settings.json
+        run: |
+          cat > dist/settings.json <<'EOF'
+          {
+              "autostart_tray": false,
+              "available_drops_check": false,
+              "connection_quality": 1,
+              "dark_mode": false,
+              "enable_badges_emotes": false,
+              "exclude": {
+                  "__type": "set",
+                  "data": []
+              },
+              "language": "简体中文",
+              "priority": [],
+              "priority_mode": {
+                  "__type": "PriorityMode",
+                  "data": 0
+              },
+              "proxy": {
+                  "__type": "URL",
+                  "data": ""
+              },
+              "tray_notifications": true
+          }
+          EOF
+
       - name: Create release folder and Zip
         run: |
           FOLDER="Twitch Drops Miner"
           mkdir -p "$FOLDER"
           cp -r "dist/Twitch Drops Miner (by DevilXD).app" "$FOLDER/"
           cp manual.txt "$FOLDER/"
+          cp settings.json "$FOLDER/"
           zip -r Twitch.Drops.Miner.MacOS.zip "$FOLDER"
 
       - name: Upload build artifact
@@ -222,6 +278,33 @@ jobs:
         run: |
           LD_LIBRARY_PATH=/tmp/libXft/lib xvfb-run --auto-servernum pyinstaller build.spec
 
+      - name: Add settings.json
+        run: |
+          cat > dist/settings.json <<'EOF'
+          {
+              "autostart_tray": false,
+              "available_drops_check": false,
+              "connection_quality": 1,
+              "dark_mode": false,
+              "enable_badges_emotes": false,
+              "exclude": {
+                  "__type": "set",
+                  "data": []
+              },
+              "language": "简体中文",
+              "priority": [],
+              "priority_mode": {
+                  "__type": "PriorityMode",
+                  "data": 0
+              },
+              "proxy": {
+                  "__type": "URL",
+                  "data": ""
+              },
+              "tray_notifications": true
+          }
+          EOF
+
       - name: Show PyInstaller warnings
         run: |
           cat build/build/warn-build.txt || true
@@ -231,6 +314,7 @@ jobs:
           folder='Twitch Drops Miner'
           mkdir "${folder}"
           cp manual.txt dist/* "${folder}"
+          cp settings.json dist/* "${folder}"
           7z a 'Twitch.Drops.Miner.Linux.PyInstaller-${{matrix.arch}}.zip' "${folder}"
 
       - name: Upload build artifact
@@ -287,11 +371,39 @@ jobs:
         run: |
           appimage-builder --recipe appimage/AppImageBuilder.yml
 
+      - name: Add settings.json
+        run: |
+          cat > dist/settings.json <<'EOF'
+          {
+              "autostart_tray": false,
+              "available_drops_check": false,
+              "connection_quality": 1,
+              "dark_mode": false,
+              "enable_badges_emotes": false,
+              "exclude": {
+                  "__type": "set",
+                  "data": []
+              },
+              "language": "简体中文",
+              "priority": [],
+              "priority_mode": {
+                  "__type": "PriorityMode",
+                  "data": 0
+              },
+              "proxy": {
+                  "__type": "URL",
+                  "data": ""
+              },
+              "tray_notifications": true
+          }
+          EOF
+
       - name: Create release folder
         run: |
           folder='Twitch Drops Miner'
           mkdir "${folder}"
           cp *.AppImage manual.txt "${folder}"
+          cp *.AppImage settings.json "${folder}"
           7z a 'Twitch.Drops.Miner.Linux.AppImage-${{matrix.arch}}.zip' "${folder}"
 
       - name: Upload build artifact
