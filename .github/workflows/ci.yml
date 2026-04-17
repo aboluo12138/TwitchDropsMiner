@@ -92,6 +92,7 @@ jobs:
           pyinstaller build.spec
   
       - name: Add settings.json
+        shell: bash
         run: |
           cat > dist/settings.json <<'EOF'
           {
@@ -172,6 +173,7 @@ jobs:
           pyinstaller build.spec --noconfirm
 
       - name: Add settings.json
+        shell: bash
         run: |
           cat > dist/settings.json <<'EOF'
           {
@@ -279,6 +281,7 @@ jobs:
           LD_LIBRARY_PATH=/tmp/libXft/lib xvfb-run --auto-servernum pyinstaller build.spec
 
       - name: Add settings.json
+        shell: bash
         run: |
           cat > dist/settings.json <<'EOF'
           {
@@ -372,6 +375,7 @@ jobs:
           appimage-builder --recipe appimage/AppImageBuilder.yml
 
       - name: Add settings.json
+        shell: bash
         run: |
           cat > dist/settings.json <<'EOF'
           {
