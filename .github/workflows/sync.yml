@@ -32,36 +32,29 @@ jobs:
       # 第三步：同步逻辑（核心）
       - name: 同步 upstream
         run: |
-          set -e  # 任意命令报错就停止
-
-          # 自动获取当前仓库默认分支（main / master 自动识别）
-          BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
-          echo "当前分支: $BRANCH"
-
-          # 删除旧的 upstream（避免重复添加时报错）
+          set -e
+          
+          # 固定分支为 master，避免动态获取失败 
+          BRANCH="master"
+          
+          # 强制清理并添加上游库 [cite: 70]
           git remote remove upstream || true
-
-          # 添加上游仓库（原作者仓库）
           git remote add upstream https://github.com/DevilXD/TwitchDropsMiner.git
-
-          # 拉取上游更新
-          git fetch upstream
-
-          # 切换到当前分支
+          
+          # 拉取更新
+          git fetch upstream $BRANCH
+          
+          # 确保在本地 master 分支
           git checkout $BRANCH
-
-          # 尝试合并上游代码
+          
+          # 尝试合并，冲突则强制覆盖
           if git merge upstream/$BRANCH --no-edit; then
-            echo "✅ merge 成功（无冲突）"
+            echo "✅ 同步成功"
           else
-            echo "⚠️ 检测到冲突，使用 upstream 强制覆盖"
-
-            # 放弃 merge
+            echo "⚠️ 检测到冲突，强制覆盖"
             git merge --abort || true
-
-            # 强制用上游代码覆盖本地
             git reset --hard upstream/$BRANCH
           fi
-
-          # 推送到你自己的 GitHub 仓库
-          git push origin $BRANCH
+          
+          # 强制推送到自己的仓库
+          git push origin $BRANCH --force
